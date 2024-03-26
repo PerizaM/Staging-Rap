@@ -1,0 +1,67 @@
+             DEVOPS-10
+Open AWS website
+Search “VPC” in aws search label (Alt+S)
+Click on VPCs from “Resources by Region” US West (N.California)us-west1
+Click on orange button that says “Create VPC”
+You choose VPC only
+On the “Name tag - optional” you write “Staging”
+We don’t touch “IPv4 CIDR block” and “IPv6 CIDR block”
+On “IPv4 CIDR” you will write 10.0.0.0/16 or it depends on your preference
+The last option is “Tags” you add tag such as “environment” for Key and “dev” for Value”
+Click on orange “Create VPC” button
+
+Go to VPC and click “Subnet” on the left side.
+Click on “Create subnet”
+Choose “Staging” VPC
+Name your subnet, we need to create 2 private and two public so we will go with “PublicSubnetStaging(C & A)” and “PrivatetSubnetStaging(C & A)”. You might have “A & B”
+Choose the availability zone that matches the last letter of the subnet name.(
+US West (N.California)us-west1-a.            
+US West (N.California)us-west1-c)
+IPv4 VPC CIDR block is “10.0.0.0/16”
+We need our Private subnet to have 4000 IPs so we gonna go with “10.0.16.0/20=4094”
+We need our Public Subnet to have 250 IPs so we gonna use “10.0.1.0/24=256”
+Push “Create subnet” button
+
+Create 2 Route Tables. One for Public Subnets and another for Private subnets.
+Click on ‘Create route tables” 
+Name your RT “PrivateStagingRT” and name next RT “PublicStagingRT”
+Choose VPC “Staging”
+Then create RT.
+Choose “PrivateStagingRT” and click on “Actions”. Pick “Edit subnet associations” and click on Private subnets. “Save associations”
+Do the same thing to public RT and subnets
+Choose “Create Internet Gateway”  and name your Internet Gateway and create it.
+Choose the “IG” and click on “Actions” Attach to VPC  
+And we need Internet Geteway for Public Subnets.
+And we need NAT Gateway for Private Subnets 
+Name your NAT Gateway select a subnet in which to create the NAT gateway and pick “Connectivity type”  we gonna choose  private and create NAT Gateway.
+Go back to “Route Table” and   “PublicStagingRT”.
+We can see many different options we gonna click “ Routes” and we click “ Edit routers”
+We click on “add route” and we need “Destination” and we choose Internet Gateway and we need to pick the Internet Gateway that we just created. 
+Ans push (Save changes).
+Next we go to Private route and do the same thing but we gonna choose “NAT Gateway” and the NAT Gateway and that created.
+
+
+
+                            DEVOPS-9
+We go s3 and create bucket 
+Pick aws region and name the bucket and in this bucket create a folder named “file-sync-service” and in this folder upload the saved image of the dog.
+And then we go to EC2 and create instance named “amp-dev-file-sync-worker”
+After that go to S3 again and pick the bucket that we created and click on “Permissions” 
+Go to bucket policy and edit it. As we did not created any polices yet we will click on “Policy generator”
+We will put needed information there and click on “Add Statement” and save changes.
+Go to IAM role and create a role. On Use case search and put “s3” and click on orange button ‘Next”. 
+Search and pick S3ReadOnlyAccess and click next.
+You may copy the policy and you are ready to create role.
+Go to that instance and pick. It and then click on “Connect” to the terminal.
+Type “aws s3 ls” to make sure that the file is there. 
+To download the file type “aws s3 sync s3://staging3 .”
+
+               DEVOPS-12
+Go to EC2 and at the bottom choose “Auto Scaling Group” and create ASG
+While creating ASG make sure that
+ • min: 1 instance
+• desired: 1 instance
+• max: 4 instances
+Create load balancer in EC2 and go back to Auto Scaling Group and click on it and under it you will see “Load Balancing” click on added an choose “Application, Network or Gateway Load Balancer target groups”
+Next choose the target group that is assoiteted with load balancer.
+And click on update button. 
